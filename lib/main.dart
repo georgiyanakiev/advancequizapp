@@ -1,61 +1,102 @@
-// Importing important packages require to connect
-// Flutter and Dart
+import 'package:demo_application/const/colors.dart';
+import 'package:demo_application/const/images.dart';
+import 'package:demo_application/const/text_style.dart';
+import 'package:demo_application/quiz_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-// Main Function
-void main() {
-// Giving command to runApp() to run the app.
-
-/* The purpose of the runApp() function is to attach
-the given widget to the screen. */
-  runApp(const MyApp());
+main() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: blue));
+  runApp(const App());
 }
 
-// Widget is used to create UI in flutter framework.
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
 
-/* StatelessWidget is a widget, which does not maintain
-any state of the widget. */
-
-/* MyApp extends StatelessWidget and overrides its
-build method. */
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-// This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // title of the application
-      title: 'Hello World Demo Application',
-      // theme of the widget
+      debugShowCheckedModeBanner: false,
+      home: const QuizApp(),
       theme: ThemeData(
-        primarySwatch: Colors.lightGreen,
+        fontFamily: "quick",
       ),
-      // Inner UI of the application
-      home: const MyHomePage(title: 'Home page'),
+      title: "Demo",
     );
   }
 }
 
-/* This class is similar to MyApp instead it
-returns Scaffold Widget */
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+class QuizApp extends StatelessWidget {
+  const QuizApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          padding: const EdgeInsets.all(12),
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [blue, darkBlue],
+              )),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(color: lightgrey, width: 2),
+                ),
+                child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      CupertinoIcons.xmark,
+                      color: Colors.white,
+                      size: 28,
+                    )),
+              ),
+              Image.asset(
+                balloon2,
+              ),
+              const SizedBox(height: 10),
+              normalText(color: lightgrey, size: 18, text: "Welcome to our"),
+              headingText(color: Colors.white, size: 32, text: "Quiz App"),
+              const SizedBox(height: 20),
+              normalText(
+                  color: lightgrey,
+                  size: 16,
+                  text: "Do you feel confident? Here you'll face our most difficult questions!"),
+              const Spacer(),
+              Align(
+                alignment: Alignment.center,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const QuizScreen()));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 7),
+                    alignment: Alignment.center,
+                    width: size.width - 100,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: headingText(color: blue, size: 18, text: "Continue"),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
-      // Sets the content to the
-      // center of the application page
-      body: const Center(
-        // Sets the content of the Application
-          child: Text(
-            'Welcome to GeeksForGeeks!',
-          )),
     );
   }
 }
